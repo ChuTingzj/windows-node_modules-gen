@@ -21,6 +21,9 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node_version }}
+        
+    - name: Open GLFS
+      run: git lfs install && git add .gitattributes
 
     - name: Install yarn
       run: npm i yarn -g
