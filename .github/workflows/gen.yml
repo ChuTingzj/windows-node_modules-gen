@@ -28,9 +28,11 @@ jobs:
     - name: Install dependencies
       run: yarn
     
-    - uses: montudor/action-zip@v1
+    - uses: thedoctor0/zip-release@0.7.1
       with:
-        args: zip -qq -r node_modules.zip node_modules
+        type: 'zip'
+        filename: 'node_modules.zip'
+        path: 'node_modules'
 
     - name: Commit & Push
       run: |
