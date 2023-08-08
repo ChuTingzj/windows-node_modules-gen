@@ -1,0 +1,43 @@
+name: NodeJS with yarn
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  gen:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node_version: ['19.6.0']
+        os: [windows-latest]
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      USERNAME: ${{ github.repository_owner }}
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node_version }}
+
+    - name: Install yarn
+      run: npm i yarn -g
+
+    - name: Install dependencies
+      run: yarn
+
+    - uses: vimtor/action-zip@v1
+      with:
+        files: node_modules
+        dest: node_modules.zip
+
+    - name: Commit & Push
+      run: |
+        git config user.name zhangjing
+        git config user.email zhangjing1024798@gmail.com
+        git pull
+        git add -A .
+        git commit -m "generated"
+        git push
